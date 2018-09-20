@@ -2,6 +2,7 @@
 using GameOfLife.Interfaces;
 using GameOfLife.Logger;
 using GameOfLife.Model;
+using GameOfLife.UserInterface;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,106 +12,81 @@ namespace GameOfLife.Logic
 {
     public class Game : IGame
     {
+        private readonly JsonLogger<Data> JsonLogger = new JsonLogger<Data>();
+        private ConsoleFieldDrawer ConsoleFieldDrawer = new ConsoleFieldDrawer();
+        private ConsoleUserInterface ConsoleUserInterface = new ConsoleUserInterface();
+
+        private MatrixField MatrixField;
+
         private int Iterations = 0;
         private int LiveCells = 0;
         private bool IsGameRunning = true;
-        private MatrixField MatrixField;
-        private readonly JsonLogger<Data> JsonLogger = new JsonLogger<Data>();
-        private ConsoleFieldDrawer ConsoleFieldDrawer = new ConsoleFieldDrawer();
 
-        //public Game(int x, int y)
-        //{
-        //    MatrixField = new MatrixField(x, y);
-        //}
-       
         public void Start()
         {
-            int dimX;
-            int dimY;
-
-            Console.WriteLine("Enter field size");
-            Console.WriteLine("X = ");
-            string input = Console.ReadLine();
-            while (!int.TryParse(input, out dimX))
-            {
-                Console.WriteLine("Invalid input.");
-                Console.WriteLine("X = ");
-                input = Console.ReadLine();
-            }
-
-            Console.WriteLine("Y = ");
-            input = Console.ReadLine();
-            while (!int.TryParse(input, out dimY))
-            {
-                Console.WriteLine("Invalid input.");
-                Console.WriteLine("Y = ");
-                input = Console.ReadLine();
-            }
-
-            Console.WriteLine($"X = {dimX}, Y = {dimY}");
-            Console.ReadLine();
-
+            ConfigureGamingField();
             Init();
             Run();
-            Console.ReadLine();
+        }
+
+        private void ConfigureGamingField()
+        {
+            int x = ConsoleUserInterface.GetDimensionInput("x");
+            int y = ConsoleUserInterface.GetDimensionInput("y");
+
+            MatrixField = new MatrixField(x, y);
         }
 
         private void Init()
         {
-            Console.Clear();
             MatrixField.ConfigureFirstGeneration();
             ConsoleFieldDrawer.DrawField(MatrixField);
         }
 
         private void Run()
         { 
-            while (IsGameRunning && !Console.KeyAvailable)
+            while (IsGameRunning && !IsTerminateGame())
             {
-                Console.Clear();
+                ConsoleUserInterface.AskForTerminateGame();
 
                 var nextGenField = MatrixField.ConfigureNextGeneration();
-                var nextGenMatrixField = new MatrixField(MatrixField.DimX, MatrixField.DimY) { Field = nextGenField };
-                ConsoleFieldDrawer.DrawField(nextGenMatrixField);
                 MatrixField.Field = nextGenField;
-
-                LiveCells = MatrixField.CountLiveCells();
-                Console.WriteLine($"Currently live cells count is {LiveCells}");
-
-                Iterations++;
-
-                Console.WriteLine("Press any key to stop the game");
+                ConsoleFieldDrawer.DrawField(MatrixField);
 
                 IsGameRunning = IsContinueGame(MatrixField);
 
-                Thread.Sleep(1000);
+                LiveCells = MatrixField.CountLiveCells();
+                ConsoleUserInterface.LiveCellsOutput(LiveCells);
+
+                Iterations++;
+                ConsoleUserInterface.IterationsOutput(Iterations);
+
+                NormalizeFrame();
             }
-            Console.WriteLine("Game Over");
-            Console.WriteLine($"Total iterations: {Iterations}");
 
             if (LiveCells != 0)
             {
-                Console.WriteLine("Save Progress? y/n");
-                var key = Console.ReadKey().Key.ToString().ToLower();
-                if (key.Equals("y"))
+                ConsoleUserInterface.AskForSaveGame();
+                if (ConsoleUserInterface.IsGameSaveRequired())
                 {
                     SaveGame();
                 }
             }
         }
 
-        public void SaveGame()
+        private void SaveGame()
         {
             var Data = new Data(MatrixField, Iterations, LiveCells);
             JsonLogger.SaveGameToLogFile(Data);
         }
 
-        public Data RestoreGame()
+        private Data RestoreGame()
         {
             Data Data = JsonLogger.RestoreLastGameFromLogFile();
             return Data;
         }
 
-        public bool IsContinueGame(MatrixField matrixField)
+        private bool IsContinueGame(MatrixField matrixField)
         {
             for (int i = 0; i < matrixField.DimY; i++)
             {
@@ -125,5 +101,14 @@ namespace GameOfLife.Logic
             return false;
         }
 
+        private bool IsTerminateGame()
+        {
+            return ConsoleUserInterface.IsAnyKeyPressed();
+        }
+
+        private void NormalizeFrame()
+        {
+            Thread.Sleep(1000);
+        }
     }
 }

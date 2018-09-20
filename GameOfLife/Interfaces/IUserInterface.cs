@@ -6,10 +6,11 @@ namespace GameOfLife.Interfaces
 {
     interface IUserInterface
     {
-        int DimensionXInput();
-        int DimensionYInput();
-        void LiveCellsOutput();
-        void IterationsOutput();
-
+        int GetDimensionInput(string dimensionName);
+        void LiveCellsOutput(int liveCells);
+        void IterationsOutput(int iterations);
+        void GameOverOutput();
+        void AskForTerminateGame();
+        void AskForSaveGame();
     }
 }

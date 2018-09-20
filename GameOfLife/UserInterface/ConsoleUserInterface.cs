@@ -8,23 +8,10 @@ namespace GameOfLife.UserInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
-        private const string DimensionXName = "X";
-        private const string DimensionYName = "Y";
 
-        public int DimensionXInput()
+        public int GetDimensionInput(string dimensionName)
         {
-            int x = GetInput(DimensionXName, out x);
-            return x;
-        }
-
-        public int DimensionYInput()
-        {
-            int y = GetInput(DimensionYName, out y);
-            return y;
-        }
-
-        private int GetInput(string dimensionName, out int dimension)
-        {
+            int dimension;
             Console.WriteLine($"{dimensionName} = ");
             string input = Console.ReadLine();
             while (!int.TryParse(input, out dimension))
@@ -36,14 +23,40 @@ namespace GameOfLife.UserInterface
             return dimension;
         }
 
-        public void LiveCellsOutput()
+        public void LiveCellsOutput(int liveCells)
         {
-
+            Console.WriteLine($"Live cells count is {liveCells}");
         }
 
-        public void IterationsOutput()
+        public void IterationsOutput(int iterations)
         {
+            Console.WriteLine($"Total iterations: {iterations}");
+        }
 
+        public bool IsAnyKeyPressed()
+        {
+            return Console.KeyAvailable;
+        }
+
+        public void GameOverOutput()
+        {
+            Console.WriteLine("Game Over");
+        }
+
+        public void AskForTerminateGame()
+        {
+            Console.WriteLine("Press any key to stop the game");
+        }
+
+        public void AskForSaveGame()
+        {
+            Console.WriteLine("Save Game? y/n");
+        }
+
+        public bool IsGameSaveRequired()
+        {
+            var key = Console.ReadKey().Key.ToString().ToLower();
+            return key.Equals("y") ? true : false;
         }
     }
 }

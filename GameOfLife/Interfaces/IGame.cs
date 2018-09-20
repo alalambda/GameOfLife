@@ -10,8 +10,5 @@ namespace GameOfLife.Interfaces
     interface IGame
     {
         void Start();
-        bool IsContinueGame(MatrixField MatrixField);
-        void SaveGame();
-        Data RestoreGame();
     }
 }
