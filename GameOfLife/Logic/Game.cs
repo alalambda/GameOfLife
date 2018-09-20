@@ -10,11 +10,11 @@ using System.Threading;
 
 namespace GameOfLife.Logic
 {
-    public class Game : IGame
+    public class Game
     {
-        private readonly JsonLogger<Data> JsonLogger = new JsonLogger<Data>();
-        private ConsoleFieldDrawer ConsoleFieldDrawer = new ConsoleFieldDrawer();
-        private ConsoleUserInterface ConsoleUserInterface = new ConsoleUserInterface();
+        private readonly ILogger<Data> JsonLogger = new JsonLogger<Data>();
+        private readonly IFieldDrawer<MatrixField> ConsoleFieldDrawer = new ConsoleFieldDrawer();
+        private readonly IUserInterface ConsoleUserInterface = new ConsoleUserInterface();
 
         private MatrixField MatrixField;
 
@@ -22,11 +22,16 @@ namespace GameOfLife.Logic
         private int LiveCells = 0;
         private bool IsGameRunning = true;
 
-        public void Start()
+        private Game()
         {
             InitField();
             InitGame();
             Run();
+        }
+
+        public static Game Start()
+        {
+            return new Game();
         }
 
         private void InitField()
@@ -47,9 +52,9 @@ namespace GameOfLife.Logic
         { 
             while (IsGameRunning && !IsTerminateGame())
             {
-                ConsoleUserInterface.AskForTerminateGame();
-
                 EvolveGeneration();
+
+                ConsoleUserInterface.AskForTerminateGame();
 
                 IsGameRunning = IsContinueGame(MatrixField);
 
@@ -61,7 +66,7 @@ namespace GameOfLife.Logic
 
                 NormalizeFrame();
             }
-
+            ConsoleUserInterface.GameOverOutput();
             AskForSaveGame();
         }
 
