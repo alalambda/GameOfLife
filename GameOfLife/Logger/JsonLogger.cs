@@ -17,24 +17,24 @@ namespace GameOfLife.Logger
 
         private string CreateFileName()
         {
-            var now = DateTime.Now.ToString(DateTimeFormat);
-            string fileName = $"{FilePrefix}{now}{FileFormat}";
+            var dateTimeNow = DateTime.Now.ToString(DateTimeFormat);
+            string fileName = $"{FilePrefix}{dateTimeNow}{FileFormat}";
             return fileName;
         }
 
-        public T RestoreLast()
+        public T RestoreLastGameFromLogFile()
         {
             var latestFileName = GetLatestFileName();
             if (latestFileName == null)
                 return default(T);
-            T t = JsonConvert.DeserializeObject<T>(File.ReadAllText(path + latestFileName));
-            return t;
+            T dererialized = JsonConvert.DeserializeObject<T>(File.ReadAllText(path + latestFileName));
+            return dererialized;
         }
 
-        public void SaveLogFile(T t)
+        public void SaveGameToLogFile(T dererialized)
         {
             var fileName = CreateFileName();
-            File.WriteAllText(path + fileName, JsonConvert.SerializeObject(t));
+            File.WriteAllText(path + fileName, JsonConvert.SerializeObject(dererialized));
         }
 
         private string GetLatestFileName()

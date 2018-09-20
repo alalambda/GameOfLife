@@ -22,11 +22,6 @@ namespace GameOfLife.Logic
 
         public bool IsContinueGame(MatrixField matrixField)
         {
-            //return matrixField.Field.Cells
-            //    .Cast<Cell[]>()
-            //    .SelectMany(cell => cell)
-            //    .Any(cell => cell.State == State.Alive);
-
             for (int i = 0; i < matrixField.DimY; i++)
             {
                 for (int j = 0; j < matrixField.DimX; j++)
@@ -82,12 +77,12 @@ namespace GameOfLife.Logic
         public void SaveGame()
         {
             var Data = new Data(MatrixField, Iterations, LiveCells);
-            JsonLogger.SaveLogFile(Data);
+            JsonLogger.SaveGameToLogFile(Data);
         }
 
         public Data RestoreGame()
         {
-            Data Data = JsonLogger.RestoreLast();
+            Data Data = JsonLogger.RestoreLastGameFromLogFile();
             return Data;
         }
     }

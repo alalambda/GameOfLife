@@ -7,13 +7,12 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            string input;
             int dimX;
             int dimY;
 
             Console.WriteLine("Enter field size");
             Console.WriteLine("X = ");
-            input = Console.ReadLine();
+            string input = Console.ReadLine();
             while (!int.TryParse(input, out dimX)){
                 Console.WriteLine("Invalid input.");
                 Console.WriteLine("X = ");
