@@ -49,9 +49,7 @@ namespace GameOfLife.Logic
             {
                 ConsoleUserInterface.AskForTerminateGame();
 
-                var nextGenField = MatrixField.ConfigureNextGeneration();
-                MatrixField.Field = nextGenField;
-                ConsoleFieldDrawer.DrawField(MatrixField);
+                EvolveGeneration();
 
                 IsGameRunning = IsContinueGame(MatrixField);
 
@@ -64,6 +62,18 @@ namespace GameOfLife.Logic
                 NormalizeFrame();
             }
 
+            AskForSaveGame();
+        }
+
+        private void EvolveGeneration()
+        {
+            var nextGenField = MatrixField.ConfigureNextGeneration();
+            MatrixField.Field = nextGenField;
+            ConsoleFieldDrawer.DrawField(MatrixField);
+        }
+
+        private void AskForSaveGame()
+        {
             if (LiveCells != 0)
             {
                 ConsoleUserInterface.AskForSaveGame();
