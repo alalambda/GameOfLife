@@ -1,5 +1,5 @@
 ﻿using System;
-using GameOfLife.Logic;
+using GameOfLife.MainGame;
 
 namespace GameOfLife
 {
