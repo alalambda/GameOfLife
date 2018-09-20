@@ -40,8 +40,8 @@ namespace GameOfLife.MainGame
 
         private void InitField()
         {
-            int x = _consoleUserInterface.GetDimensionInput("x");
-            int y = _consoleUserInterface.GetDimensionInput("y");
+            var x = _consoleUserInterface.GetDimensionInput("x");
+            var y = _consoleUserInterface.GetDimensionInput("y");
 
             matrixField = new MatrixField(x, y);
         }

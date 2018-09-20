@@ -46,7 +46,7 @@ namespace GameOfLife.Logic
 
         public Data RestoreGame()
         {
-            Data Data = _jsonLogger.RestoreLastGameFromLogFile();
+            var Data = _jsonLogger.RestoreLastGameFromLogFile();
             return Data;
         }
 
