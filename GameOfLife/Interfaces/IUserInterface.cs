@@ -11,8 +11,7 @@ namespace GameOfLife.Interfaces
         void IterationsOutput(int iterations);
         bool IsAnyKeyPressed();
         void GameOverOutput();
-        void AskForTerminateGame();
-        void AskForSaveGame();
+        void AskForTerminateGame()
         bool IsGameSaveRequired();
     }
 }

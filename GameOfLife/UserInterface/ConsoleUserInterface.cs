@@ -49,13 +49,9 @@ namespace GameOfLife.UserInterface
             Console.WriteLine("Press any key to stop the game");
         }
 
-        public void AskForSaveGame()
-        {
-            Console.WriteLine("Save Game? y/n");
-        }
-
         public bool IsGameSaveRequired()
         {
+            Console.WriteLine("Save Game? y/n");
             var key = Console.ReadKey().Key.ToString().ToLower();
             return key.Equals("y") ? true : false;
         }
