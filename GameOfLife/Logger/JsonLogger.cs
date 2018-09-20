@@ -1,4 +1,4 @@
-﻿using GameOfLife.Loggers;
+﻿using GameOfLife.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,16 +25,14 @@ namespace GameOfLife.Logger
         public T RestoreLastGameFromLogFile()
         {
             var latestFileName = GetLatestFileName();
-            if (latestFileName == null)
-                return default(T);
-            T dererialized = JsonConvert.DeserializeObject<T>(File.ReadAllText(path + latestFileName));
-            return dererialized;
+            return string.IsNullOrEmpty(latestFileName) ? 
+                default(T) : JsonConvert.DeserializeObject<T>(File.ReadAllText(path + latestFileName));
         }
 
-        public void SaveGameToLogFile(T dererialized)
+        public void SaveGameToLogFile(T deserialized)
         {
             var fileName = CreateFileName();
-            File.WriteAllText(path + fileName, JsonConvert.SerializeObject(dererialized));
+            File.WriteAllText(path + fileName, JsonConvert.SerializeObject(deserialized));
         }
 
         private string GetLatestFileName()

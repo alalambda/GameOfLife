@@ -1,11 +1,11 @@
 ﻿using GameOfLife.Helpers;
-using GameOfLife.Logic;
+using GameOfLife.Interfaces;
 using GameOfLife.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife.Logger
+namespace GameOfLife.Logic
 {
     public class MatrixField : IField<MatrixFieldUnit>
     {
@@ -54,24 +54,6 @@ namespace GameOfLife.Logger
             else if (state.Equals(State.Alive) && aliveNeighbors == 2 || aliveNeighbors == 3) return State.Alive;
             else if (state.Equals(State.Dead) && aliveNeighbors == 3) return State.Alive;
             return state;
-        }
-
-        public void DrawField(MatrixFieldUnit f)
-        {
-            var matrixField = f;
-            if (f == null)
-            {
-                matrixField = this.Field;
-            }
-
-            for (int i = 0; i < DimX; i++)
-            {
-                for (int j = 0; j < DimY; j++)
-                {
-                    Console.Write((int)matrixField.Cells[i, j].State);
-                }
-                Console.WriteLine();
-            }
         }
 
         public int GetAliveNeighboursForCell(int x, int y)

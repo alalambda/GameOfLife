@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife.Loggers
+namespace GameOfLife.Interfaces
 {
     interface ILogger<T>
     {
