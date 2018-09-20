@@ -79,12 +79,9 @@ namespace GameOfLife.Logic
 
         private void AskForSaveGame()
         {
-            if (LiveCells != 0)
+            if (LiveCells != 0 && ConsoleUserInterface.IsGameSaveRequired())
             {
-                if (ConsoleUserInterface.IsGameSaveRequired())
-                {
-                    SaveGame();
-                }
+                SaveGame();
             }
         }
 
