@@ -1,10 +1,11 @@
-﻿using GameOfLife.Model;
+﻿using GameOfLife.Logger;
+using GameOfLife.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace GameOfLife
+namespace GameOfLife.Logic
 {
     public class Game : IGame
     {

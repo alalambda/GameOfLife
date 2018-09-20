@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife.Model
+namespace GameOfLife.ConsoleMethods
 {
-    public enum State
+    class ConsoleInteraction
     {
-        Dead = 0,
-        Alive = 1
     }
 }

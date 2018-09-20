@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Model
 {
     public class Cell
     {

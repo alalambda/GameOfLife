@@ -1,8 +1,11 @@
-﻿using System;
+﻿using GameOfLife.Helpers;
+using GameOfLife.Logic;
+using GameOfLife.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Logger
 {
     public class MatrixField : IField<MatrixFieldUnit>
     {

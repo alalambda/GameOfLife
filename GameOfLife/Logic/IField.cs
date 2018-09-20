@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GameOfLife.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Logic
 {
     public interface IField<T>
     {

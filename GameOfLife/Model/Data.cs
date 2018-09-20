@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameOfLife.Logger;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

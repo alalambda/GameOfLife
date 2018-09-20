@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Helpers
 {
     public static class StateMethods
     {

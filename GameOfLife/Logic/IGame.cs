@@ -1,9 +1,10 @@
-﻿using GameOfLife.Model;
+﻿using GameOfLife.Logger;
+using GameOfLife.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Logic
 {
     interface IGame
     {

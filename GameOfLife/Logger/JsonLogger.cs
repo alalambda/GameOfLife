@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using GameOfLife.Loggers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace GameOfLife
+namespace GameOfLife.Logger
 {
     public class JsonLogger<T> : ILogger<T>
     {
