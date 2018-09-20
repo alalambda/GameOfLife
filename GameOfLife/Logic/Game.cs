@@ -24,12 +24,12 @@ namespace GameOfLife.Logic
 
         public void Start()
         {
-            ConfigureGamingField();
-            Init();
+            InitField();
+            InitGame();
             Run();
         }
 
-        private void ConfigureGamingField()
+        private void InitField()
         {
             int x = ConsoleUserInterface.GetDimensionInput("x");
             int y = ConsoleUserInterface.GetDimensionInput("y");
@@ -37,7 +37,7 @@ namespace GameOfLife.Logic
             MatrixField = new MatrixField(x, y);
         }
 
-        private void Init()
+        private void InitGame()
         {
             MatrixField.ConfigureFirstGeneration();
             ConsoleFieldDrawer.DrawField(MatrixField);
