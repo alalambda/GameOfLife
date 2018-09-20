@@ -19,7 +19,7 @@ namespace GameOfLife.Logic
         private MatrixField _matrixField;
 
         private int _iterations = 0;
-        private int _liveCells; 
+        private int _liveCells;
 
         public Game()
         {
