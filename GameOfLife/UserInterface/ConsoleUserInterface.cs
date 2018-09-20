@@ -49,11 +49,22 @@ namespace GameOfLife.UserInterface
             Console.WriteLine("Press any key to stop the game");
         }
 
+        public bool IsGameRestoreRequired()
+        {
+            Console.WriteLine("Restore last saved game? y/n");
+            return IsYesOptionSelected(); 
+        }
+
         public bool IsGameSaveRequired()
         {
             Console.WriteLine("Save Game? y/n");
+            return IsYesOptionSelected();
+        }
+
+        private bool IsYesOptionSelected()
+        {
             var key = Console.ReadKey().Key.ToString().ToLower();
-            return key.Equals("y") ? true : false;
+            return key.Equals("y");
         }
     }
 }

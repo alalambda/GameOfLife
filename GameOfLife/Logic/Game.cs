@@ -12,74 +12,83 @@ namespace GameOfLife.Logic
 {
     public class Game
     {
-        private readonly ILogger<Data> JsonLogger = new JsonLogger<Data>();
-        private readonly IFieldDrawer<MatrixField> ConsoleFieldDrawer = new ConsoleFieldDrawer();
-        private readonly IUserInterface ConsoleUserInterface = new ConsoleUserInterface();
+        private readonly ILogger<Data> _jsonLogger;
+        private readonly IFieldDrawer<MatrixField> _consoleFieldDrawer;
+        private readonly IUserInterface _consoleUserInterface;
 
-        private MatrixField MatrixField;
+        private MatrixField _matrixField;
 
-        private int Iterations = 0;
-        private int LiveCells = 0;
-        private bool IsGameRunning = true;
+        private int _iterations = 0;
+        private int _liveCells;
 
-        private Game()
+        public Game()
+        {
+            _jsonLogger = new JsonLogger<Data>();
+            _consoleFieldDrawer = new ConsoleFieldDrawer();
+            _consoleUserInterface = new ConsoleUserInterface();
+        }
+
+        public void Start()
         {
             InitField();
+            //InitRestoredGame();
             InitGame();
             Run();
         }
 
-        public static Game Start()
-        {
-            return new Game();
-        }
-
         private void InitField()
         {
-            int x = ConsoleUserInterface.GetDimensionInput("x");
-            int y = ConsoleUserInterface.GetDimensionInput("y");
+            int x = _consoleUserInterface.GetDimensionInput("x");
+            int y = _consoleUserInterface.GetDimensionInput("y");
 
-            MatrixField = new MatrixField(x, y);
+            _matrixField = new MatrixField(x, y);
+        }
+
+        private void InitRestoredGame()
+        {
+            if (_consoleUserInterface.IsGameRestoreRequired())
+            {
+                var data = RestoreGame();
+            }
         }
 
         private void InitGame()
         {
-            MatrixField.ConfigureFirstGeneration();
-            ConsoleFieldDrawer.DrawField(MatrixField);
+            _matrixField.ConfigureFirstGeneration();
+            _consoleFieldDrawer.DrawField(_matrixField);
+            _liveCells = _matrixField.CountLiveCells();
         }
 
         private void Run()
         { 
-            while (IsGameRunning && !IsTerminateGame())
+            while (_liveCells != 0 && !IsTerminateGame())
             {
                 EvolveGeneration();
 
-                ConsoleUserInterface.AskForTerminateGame();
+                _consoleUserInterface.AskForTerminateGame();
 
-                IsGameRunning = IsContinueGame(MatrixField);
+                _liveCells = _matrixField.CountLiveCells();
+                _consoleUserInterface.LiveCellsOutput(_liveCells);
 
-                LiveCells = MatrixField.CountLiveCells();
-                ConsoleUserInterface.LiveCellsOutput(LiveCells);
-
-                Iterations++;
-                ConsoleUserInterface.IterationsOutput(Iterations);
+                _iterations++;
+                _consoleUserInterface.IterationsOutput(_iterations);
 
                 NormalizeFrame();
             }
-            ConsoleUserInterface.GameOverOutput();
+            _consoleUserInterface.GameOverOutput();
             AskForSaveGame();
         }
 
         private void EvolveGeneration()
         {
-            var nextGenField = MatrixField.ConfigureNextGeneration();
-            MatrixField.Field = nextGenField;
-            ConsoleFieldDrawer.DrawField(MatrixField);
+            var nextGenField = _matrixField.ConfigureNextGeneration();
+            _matrixField.Field = nextGenField;
+            _consoleFieldDrawer.DrawField(_matrixField);
         }
 
         private void AskForSaveGame()
         {
-            if (LiveCells != 0 && ConsoleUserInterface.IsGameSaveRequired())
+            if (_liveCells != 0 && _consoleUserInterface.IsGameSaveRequired())
             {
                 SaveGame();
             }
@@ -87,34 +96,19 @@ namespace GameOfLife.Logic
 
         private void SaveGame()
         {
-            var Data = new Data(MatrixField, Iterations, LiveCells);
-            JsonLogger.SaveGameToLogFile(Data);
+            var Data = new Data(_matrixField, _iterations, _liveCells);
+            _jsonLogger.SaveGameToLogFile(Data);
         }
 
         private Data RestoreGame()
         {
-            Data Data = JsonLogger.RestoreLastGameFromLogFile();
+            Data Data = _jsonLogger.RestoreLastGameFromLogFile();
             return Data;
-        }
-
-        private bool IsContinueGame(MatrixField matrixField)
-        {
-            for (int i = 0; i < matrixField.DimY; i++)
-            {
-                for (int j = 0; j < matrixField.DimX; j++)
-                {
-                    if (State.Alive == matrixField.Field.Cells[j, i].State)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         private bool IsTerminateGame()
         {
-            return ConsoleUserInterface.IsAnyKeyPressed();
+            return _consoleUserInterface.IsAnyKeyPressed();
         }
 
         private void NormalizeFrame()
