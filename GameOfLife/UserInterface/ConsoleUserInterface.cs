@@ -8,33 +8,32 @@ namespace GameOfLife.UserInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
+        private const string DimensionXName = "X";
+        private const string DimensionYName = "Y";
+
         public int DimensionXInput()
         {
-            int dimX;
-            Console.WriteLine("Enter field size");
-            Console.WriteLine("X = ");
-            string input = Console.ReadLine();
-            while (!int.TryParse(input, out dimX))
-            {
-                Console.WriteLine("Invalid input.");
-                Console.WriteLine("X = ");
-                input = Console.ReadLine();
-            }
-            return dimX;
+            int x = GetInput(DimensionXName, out x);
+            return x;
         }
 
         public int DimensionYInput()
         {
-            int dimY;
-            Console.WriteLine("Y = ");
+            int y = GetInput(DimensionYName, out y);
+            return y;
+        }
+
+        private int GetInput(string dimensionName, out int dimension)
+        {
+            Console.WriteLine($"{dimensionName} = ");
             string input = Console.ReadLine();
-            while (!int.TryParse(input, out dimY))
+            while (!int.TryParse(input, out dimension))
             {
                 Console.WriteLine("Invalid input.");
-                Console.WriteLine("Y = ");
+                Console.WriteLine($"{dimensionName} = ");
                 input = Console.ReadLine();
             }
-            return dimY;
+            return dimension;
         }
 
         public void LiveCellsOutput()
