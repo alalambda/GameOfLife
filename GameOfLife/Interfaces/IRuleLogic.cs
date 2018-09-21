@@ -5,8 +5,8 @@ using System.Text;
 
 namespace GameOfLife.Interfaces
 {
-    interface IMatrixFieldLogic
+    interface IRuleLogic
     {
-        Cell[,] GetFirstGeneration(int dimX, int dimY);
+        Cell[,] ApplyNextGenerationRulesOnField(MatrixField matrixField);
     }
 }

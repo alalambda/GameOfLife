@@ -25,13 +25,6 @@ namespace GameOfLife.Logic
             _matrixFieldLogic = new MatrixFieldLogic();
         }
 
-        public MatrixField EvolveGeneration(MatrixField matrixField)
-        {
-            var nextGenCells = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
-            matrixField.Cells = nextGenCells;
-            return matrixField;
-        }
-
         public void SaveGame(MatrixField matrixField, int iterations, int liveCells)
         {
             if (liveCells != 0 && _consoleUserInterface.IsGameSaveRequired())

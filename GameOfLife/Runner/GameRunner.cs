@@ -18,6 +18,7 @@ namespace GameOfLife.Runner
         private readonly IGameLogic _gameLogic;
         private readonly IMatrixFieldLogic _matrixFieldLogic;
         private readonly ICellLogic _cellLogic;
+        private readonly IRuleLogic _ruleLogic;
 
         private MatrixField matrixField;
 
@@ -31,6 +32,7 @@ namespace GameOfLife.Runner
             _gameLogic = new GameLogic();
             _matrixFieldLogic = new MatrixFieldLogic();
             _cellLogic = new CellLogic();
+            _ruleLogic = new RuleLogic();
         }
 
         public void Start()
@@ -75,7 +77,9 @@ namespace GameOfLife.Runner
         { 
             while (liveCells != 0 && !_gameLogic.IsTerminateGame())
             {
-                matrixField = _gameLogic.EvolveGeneration(matrixField);
+                var cells = _ruleLogic.ApplyNextGenerationRulesOnField(matrixField);
+                matrixField.Cells = cells;
+
                 _consoleFieldDrawer.DrawField(matrixField);
 
                 _consoleUserInterface.AskForTerminateGame();
