@@ -1,4 +1,4 @@
-﻿using GameOfLife.Helpers;
+﻿using GameOfLife.Utils;
 using GameOfLife.Interfaces;
 using GameOfLife.Model;
 using System;
@@ -16,7 +16,7 @@ namespace GameOfLife.Logic
             {
                 for (int x = 0; x < dimX; x++)
                 {
-                    Cell cell = new Cell() { State = StateMethods.GetRandomState<State>() };
+                    Cell cell = new Cell() { State = EnumValueRandomizer.GetRandomEnumValue<State>() };
                     cells[x, y] = cell;
                 }
             }

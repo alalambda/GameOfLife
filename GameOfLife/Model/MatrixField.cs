@@ -1,7 +1,4 @@
-﻿using GameOfLife.Helpers;
-using GameOfLife.Interfaces;
-using GameOfLife.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
