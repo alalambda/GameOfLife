@@ -10,7 +10,7 @@ namespace GameOfLife.Logger
 {
     public class JsonLogger<T> : ILogger<T>
     {
-        private const string path = @"C:\Users\anna.timoskina\source\repos\GameOfLife\GameOfLife\Log\";
+        private const string path = @"C:\Users\anna.timoskina\source\repos\GameOfLife\Log\";
         private const string DateTimeFormat = "yyyy-MM-dd-hh-mm-ss";
         private const string FilePrefix = "log_";
         private const string FileFormat = ".json";

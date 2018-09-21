@@ -1,4 +1,4 @@
-﻿using GameOfLife.FieldDrawer;
+﻿using GameOfLife.Drawer;
 using GameOfLife.Interfaces;
 using GameOfLife.Logger;
 using GameOfLife.Model;

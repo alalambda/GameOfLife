@@ -1,5 +1,5 @@
 ﻿using System;
-using GameOfLife.MainGame;
+using GameOfLife.Runner;
 
 namespace GameOfLife
 {

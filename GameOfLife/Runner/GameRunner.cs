@@ -1,4 +1,4 @@
-﻿using GameOfLife.FieldDrawer;
+﻿using GameOfLife.Drawer;
 using GameOfLife.Interfaces;
 using GameOfLife.Logger;
 using GameOfLife.Logic;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace GameOfLife.MainGame
+namespace GameOfLife.Runner
 {
     public class GameRunner
     {

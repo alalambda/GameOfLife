@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace GameOfLife.FieldDrawer
+namespace GameOfLife.Drawer
 {
      public class ConsoleFieldDrawer : IFieldDrawer<MatrixField>
     {

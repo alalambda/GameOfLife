@@ -1,18 +1,20 @@
-﻿using GameOfLife.Model;
+﻿using GameOfLife.Helpers;
+using GameOfLife.Interfaces;
+using GameOfLife.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameOfLife.Helpers
+namespace GameOfLife.Logic
 {
-    public class FieldGenerator
+    public class FieldGenerationLogic : IFieldGenerationLogic
     {
-        public MatrixFieldUnit RandomField(int dimX, int dimY)
+        public MatrixFieldUnit GenerateRandomField(int dimX, int dimY)
         {
             MatrixFieldUnit matrixFieldUnit = new MatrixFieldUnit(dimX, dimY);
-            for (int y = 0; y < dimX; y++)
+            for (int y = 0; y < dimY; y++)
             {
-                for (int x = 0; x < dimY; x++)
+                for (int x = 0; x < dimX; x++)
                 {
                     Cell cell = new Cell() { State = StateMethods.GetRandomState<State>() };
                     matrixFieldUnit.Cells[x, y] = cell;
