@@ -48,7 +48,7 @@ namespace GameOfLife.Logic
                             height = 0;
                         }
 
-                        if (State.Alive.Equals(matrixField.Field.Cells[height, width].State)) alive++;
+                        if (State.Alive.Equals(matrixField.Cells[height, width].State)) alive++;
                     }
                 }
             }
@@ -63,7 +63,7 @@ namespace GameOfLife.Logic
             {
                 for (int j = 0; j < matrixField.DimX; j++)
                 {
-                    if (State.Alive.Equals(matrixField.Field.Cells[j, i].State))
+                    if (State.Alive.Equals(matrixField.Cells[j, i].State))
                     {
                         liveCells++;
                     }

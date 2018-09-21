@@ -27,8 +27,8 @@ namespace GameOfLife.Logic
 
         public MatrixField EvolveGeneration(MatrixField matrixField)
         {
-            var nextGenField = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
-            matrixField.Field = nextGenField;
+            var nextGenCells = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
+            matrixField.Cells = nextGenCells;
             return matrixField;
         }
 

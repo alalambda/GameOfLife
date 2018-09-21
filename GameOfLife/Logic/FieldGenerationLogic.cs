@@ -9,18 +9,18 @@ namespace GameOfLife.Logic
 {
     public class FieldGenerationLogic : IFieldGenerationLogic
     {
-        public MatrixFieldUnit GenerateRandomField(int dimX, int dimY)
+        public Cell[,] GenerateRandomField(int dimX, int dimY)
         {
-            MatrixFieldUnit matrixFieldUnit = new MatrixFieldUnit(dimX, dimY);
+            Cell[,] cells = new Cell[dimX, dimY];
             for (int y = 0; y < dimY; y++)
             {
                 for (int x = 0; x < dimX; x++)
                 {
                     Cell cell = new Cell() { State = StateMethods.GetRandomState<State>() };
-                    matrixFieldUnit.Cells[x, y] = cell;
+                    cells[x, y] = cell;
                 }
             }
-            return matrixFieldUnit;
+            return cells;
         }
     }
 }

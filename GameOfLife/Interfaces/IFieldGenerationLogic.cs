@@ -7,6 +7,6 @@ namespace GameOfLife.Interfaces
 {
     interface IFieldGenerationLogic
     {
-        MatrixFieldUnit GenerateRandomField(int dimX, int dimY);
+        Cell[,] GenerateRandomField(int dimX, int dimY);
     }
 }

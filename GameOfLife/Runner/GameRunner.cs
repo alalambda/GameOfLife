@@ -35,34 +35,39 @@ namespace GameOfLife.Runner
 
         public void Start()
         {
-            InitGameField();
-            //InitRestoredGame();
-            InitGame();
+            if (_consoleUserInterface.IsGameRestoreRequired()) InitRestoredGame();
+            else InitNewGame();
+            Show();
+            InitLiveCells();
             Run();
         }
 
-        private void InitGameField()
+        private void InitNewGame()
         {
             var x = _consoleUserInterface.GetDimensionInput("x");
             var y = _consoleUserInterface.GetDimensionInput("y");
 
             matrixField = new MatrixField(x, y);
 
-            var matrixFieldUnit = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
-            matrixField.Field = matrixFieldUnit;
+            var cells = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
+            matrixField.Cells = cells;
         }
 
         private void InitRestoredGame()
         {
-            if (_consoleUserInterface.IsGameRestoreRequired())
-            {
-                var data = _gameLogic.RestoreGame();
-            }
+            var data = _gameLogic.RestoreGame();
+            matrixField = data.MatrixField;
+            liveCells = data.LiveCells;
+            iterations = data.Iterations;
         }
 
-        private void InitGame()
+        private void Show()
         {   
             _consoleFieldDrawer.DrawField(matrixField);
+        }
+
+        private void InitLiveCells()
+        {
             liveCells = _cellLogic.CountLiveCells(matrixField);
         }
 

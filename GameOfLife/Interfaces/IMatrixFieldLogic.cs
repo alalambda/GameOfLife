@@ -7,7 +7,7 @@ namespace GameOfLife.Interfaces
 {
     interface IMatrixFieldLogic
     {
-        MatrixFieldUnit GetFirstGeneration(int dimX, int dimY);
-        MatrixFieldUnit GetNextGeneration(int dimX, int dimY);
+        Cell[,] GetFirstGeneration(int dimX, int dimY);
+        Cell[,] GetNextGeneration(int dimX, int dimY);
     }
 }

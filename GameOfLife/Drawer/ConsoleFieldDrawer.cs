@@ -16,7 +16,7 @@ namespace GameOfLife.Drawer
             {
                 for (int y = 0; y < MatrixField.DimY; y++)
                 {
-                    Console.Write((int) MatrixField.Field.Cells[x, y].State);
+                    Console.Write((int) MatrixField.Cells[x, y].State);
                 }
                 Console.WriteLine();
             }
