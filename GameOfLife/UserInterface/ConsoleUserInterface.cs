@@ -8,7 +8,6 @@ namespace GameOfLife.UserInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
-
         public int GetDimensionInput(string dimensionName)
         {
             int dimension;
