@@ -8,5 +8,6 @@ namespace GameOfLife.Interfaces
     interface IFieldDrawer<T>
     {
         void DrawField(T field);
+        void NormalizeFrame();
     }
 }

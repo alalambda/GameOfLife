@@ -11,39 +11,45 @@ using System.Threading;
 
 namespace GameOfLife.MainGame
 {
-    public class Game
+    public class GameRunner
     {
         private readonly IFieldDrawer<MatrixField> _consoleFieldDrawer;
         private readonly IUserInterface _consoleUserInterface;
-
-        private readonly GameLogic _gameLogic;
+        private readonly IGameLogic _gameLogic;
+        private readonly IMatrixFieldLogic _matrixFieldLogic;
+        private readonly ICellLogic _cellLogic;
 
         private MatrixField matrixField;
 
         private int iterations = 0;
         private int liveCells;
 
-        public Game()
+        public GameRunner()
         {
             _consoleFieldDrawer = new ConsoleFieldDrawer();
             _consoleUserInterface = new ConsoleUserInterface();
             _gameLogic = new GameLogic();
+            _matrixFieldLogic = new MatrixFieldLogic();
+            _cellLogic = new CellLogic();
         }
 
         public void Start()
         {
-            InitField();
+            InitGameField();
             //InitRestoredGame();
             InitGame();
             Run();
         }
 
-        private void InitField()
+        private void InitGameField()
         {
             var x = _consoleUserInterface.GetDimensionInput("x");
             var y = _consoleUserInterface.GetDimensionInput("y");
 
             matrixField = new MatrixField(x, y);
+
+            var matrixFieldUnit = _matrixFieldLogic.GetFirstGeneration(matrixField.DimX, matrixField.DimY);
+            matrixField.Field = matrixFieldUnit;
         }
 
         private void InitRestoredGame()
@@ -55,10 +61,9 @@ namespace GameOfLife.MainGame
         }
 
         private void InitGame()
-        {
-            matrixField.ConfigureFirstGeneration();
+        {   
             _consoleFieldDrawer.DrawField(matrixField);
-            liveCells = matrixField.CountLiveCells();
+            liveCells = _cellLogic.CountLiveCells(matrixField);
         }
 
         private void Run()
@@ -70,16 +75,16 @@ namespace GameOfLife.MainGame
 
                 _consoleUserInterface.AskForTerminateGame();
 
-                liveCells = matrixField.CountLiveCells();
+                liveCells = _cellLogic.CountLiveCells(matrixField);
                 _consoleUserInterface.LiveCellsOutput(liveCells);
 
                 iterations++;
                 _consoleUserInterface.IterationsOutput(iterations);
 
-                _gameLogic.NormalizeFrame();
+                _consoleFieldDrawer.NormalizeFrame();
             }
             _consoleUserInterface.GameOverOutput();
-            _gameLogic.AskForSaveGame(matrixField, iterations, liveCells);
+            _gameLogic.SaveGame(matrixField, iterations, liveCells);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using GameOfLife.Interfaces;
-using GameOfLife.Logic;
+using GameOfLife.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace GameOfLife.FieldDrawer
 {
@@ -19,6 +20,11 @@ namespace GameOfLife.FieldDrawer
                 }
                 Console.WriteLine();
             }
+        }
+
+        public void NormalizeFrame()
+        {
+            Thread.Sleep(1000);
         }
     }
 }

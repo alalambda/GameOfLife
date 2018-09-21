@@ -7,7 +7,7 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            new Game().Start();
+            new GameRunner().Start();
         }
     }
 }
