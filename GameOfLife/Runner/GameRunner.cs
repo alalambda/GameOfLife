@@ -1,13 +1,8 @@
 ﻿using GameOfLife.Drawer;
 using GameOfLife.Interfaces;
-using GameOfLife.Logger;
 using GameOfLife.Logic;
 using GameOfLife.Model;
 using GameOfLife.UserInterface;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace GameOfLife.Runner
 {
@@ -37,8 +32,9 @@ namespace GameOfLife.Runner
 
         public void Start()
         {
-            if (_consoleUserInterface.IsGameRestoreRequired()) InitRestoredGame();
-            else InitNewGame();
+            //if (_consoleUserInterface.IsGameRestoreRequired()) InitRestoredGame();
+            //else InitNewGame();
+            InitNewGame();
             Show();
             InitLiveCells();
             Run();
