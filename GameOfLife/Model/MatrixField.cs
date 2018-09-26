@@ -9,6 +9,8 @@ namespace GameOfLife.Model
         public int DimX { get; set; }
         public int DimY { get; set; }
         public Cell[,] Cells { get; set; }
+        public int LiveCells { get; set; }
+        public int Iterations { get; set; }
 
         public MatrixField(int x, int y)
         {
