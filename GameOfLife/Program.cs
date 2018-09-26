@@ -9,9 +9,6 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
-
-            //new GameRunner().Start(false);
-
             int maxGames;
             Console.WriteLine("Choose game count to run: ");
             string input = Console.ReadLine();
@@ -26,9 +23,8 @@ namespace GameOfLife
 
             Parallel.For(0, maxGames, i =>
             {
-                Task game = new Task(() => new GameRunner().Start(false));
+                Task game = new Task(() => new GameRunner());
                 taskIds[i] = game.Id;
-                game.Start();
             });
 
             for (int i = 0; i < maxGames; i++)
