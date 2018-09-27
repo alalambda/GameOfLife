@@ -6,7 +6,7 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
-            new ParallelRunner().Run();
+            new ParallelRunnerV1().RunParallel();
         }
     }
 }
