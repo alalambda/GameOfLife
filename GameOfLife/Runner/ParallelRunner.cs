@@ -3,6 +3,7 @@ using GameOfLife.UserInterface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GameOfLife.Runner
@@ -10,6 +11,8 @@ namespace GameOfLife.Runner
     public class ParallelRunner
     {
         private readonly IUserInterface _consoleUserInterface;
+
+        private int totalLiveCells = 0;
 
         public ParallelRunner()
         {
@@ -48,7 +51,7 @@ namespace GameOfLife.Runner
             Console.WriteLine("Enter game numbers to show. If you wish to show less than 8 games, end with 0.");
 
             int gameNo;
-            var gamesToShow = new List<int>();
+            var gamesToShow = new int?[8];
             for (int i = 0; i < 8; i++)
             {
                 input = Console.ReadLine();
@@ -59,19 +62,31 @@ namespace GameOfLife.Runner
                     input = Console.ReadLine();
                 }
                 if (gameNo == 0) break;
-                gamesToShow.Add(gameNo);
+                gamesToShow[i] = gameNo;
             }
 
-            foreach (var entry in gameRunnerInstances)
+            do
             {
-                foreach (var gameNumber in gamesToShow)
+                Console.Clear();
+                foreach (var entry in gameRunnerInstances)
                 {
-                    if (entry.Key == gameNumber)
+                    totalLiveCells = 0;
+                    for (int i = 0; i < gamesToShow.Length; i++)
                     {
-                        entry.Value.Show();
+                        if (entry.Key == gamesToShow[i])
+                        {
+                            Console.WriteLine($"\nGame no. {entry.Key}");
+                            entry.Value.Process();
+                            totalLiveCells =+ entry.Value.MatrixField.LiveCells;
+                            entry.Value.Show();
+                            if (entry.Value.MatrixField.LiveCells == 0)
+                            {
+                                _consoleUserInterface.GameOverOutput();
+                            }
+                        }
                     }
-                }
-            }
+                } 
+            } while (totalLiveCells != 0 || !_consoleUserInterface.IsAnyKeyPressed());
             Console.ReadLine();
         }
     }

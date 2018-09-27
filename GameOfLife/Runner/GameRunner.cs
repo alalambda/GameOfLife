@@ -64,12 +64,16 @@ namespace GameOfLife.Runner
         { 
             while (MatrixField.LiveCells != 0 && !_consoleUserInterface.IsAnyKeyPressed())
             {
-                MatrixField.Cells = _ruleLogic.ApplyNextGenerationRulesOnField(MatrixField);
-                MatrixField.LiveCells = _cellLogic.CountLiveCells(MatrixField);
-                MatrixField.Iterations++;
-
-                Thread.Sleep(1000);
+                Process();
             }
+        }
+        public void Process()
+        {
+            MatrixField.Cells = _ruleLogic.ApplyNextGenerationRulesOnField(MatrixField);
+            MatrixField.LiveCells = _cellLogic.CountLiveCells(MatrixField);
+            MatrixField.Iterations++;
+
+            Thread.Sleep(1000);
         }
     }
 }

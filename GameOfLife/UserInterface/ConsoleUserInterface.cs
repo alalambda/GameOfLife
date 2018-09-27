@@ -39,7 +39,6 @@ namespace GameOfLife.UserInterface
         public void GameOverOutput()
         {
             Console.WriteLine("Game Over");
-            Console.Read();
         }
 
         public void AskForTerminateGame()
