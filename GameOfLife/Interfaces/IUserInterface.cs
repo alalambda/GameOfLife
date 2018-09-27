@@ -4,7 +4,7 @@ namespace GameOfLife.Interfaces
 {
     interface IUserInterface
     {
-        int GetDimensionInput(string dimensionName);
+        int GetUserInput(string paramName);
         void LiveCellsOutput(int liveCells);
         void IterationsOutput(int iterations);
         bool IsAnyKeyPressed();
@@ -14,5 +14,6 @@ namespace GameOfLife.Interfaces
         bool IsGameSaveRequired();
         void OutputField(MatrixField MatrixField);
         void NormalizeOutputRate();
+        void AskForGameCountToRun();
     }
 }

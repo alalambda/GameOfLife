@@ -7,15 +7,15 @@ namespace GameOfLife.UserInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
-        public int GetDimensionInput(string dimensionName)
+        public int GetUserInput(string paramName)
         {
             int dimension;
-            Console.WriteLine($"{dimensionName} = ");
+            Console.WriteLine($"{paramName} = ");
             string input = Console.ReadLine();
             while (!int.TryParse(input, out dimension))
             {
                 Console.WriteLine("Invalid input.");
-                Console.WriteLine($"{dimensionName} = ");
+                Console.WriteLine($"{paramName} = ");
                 input = Console.ReadLine();
             }
             return dimension;
@@ -75,12 +75,17 @@ namespace GameOfLife.UserInterface
                 }
                 Console.WriteLine();
             }
-            NormalizeOutputRate();
+            //NormalizeOutputRate();
         }
 
         public void NormalizeOutputRate()
         {
             Thread.Sleep(1000);
+        }
+            
+        public void AskForGameCountToRun()
+        {
+            Console.WriteLine("Choose game count to run: ");
         }
     }
 }
