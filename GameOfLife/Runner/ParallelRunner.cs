@@ -1,6 +1,7 @@
 ﻿using GameOfLife.Constants;
 using GameOfLife.Interfaces;
 using GameOfLife.UserInterface;
+using GameOfLife.Validators;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,8 @@ namespace GameOfLife.Runner
     {
         private readonly IUserInterface _consoleUserInterface;
 
+        private readonly Validator _validator;
+
         private Dictionary<int, GameRunner> gameRunnerInstances;
 
         private int totalLiveCells = 0;
@@ -21,25 +24,19 @@ namespace GameOfLife.Runner
         public ParallelRunner()
         {
             _consoleUserInterface = new ConsoleUserInterface();
+            _validator = new Validator();
             gameRunnerInstances = new Dictionary<int, GameRunner>();
         }
 
         public void Run()
         {
-            int maxGames;
-            _consoleUserInterface.AskForGameCountToRun();
-            string input = Console.ReadLine();
-            while (!int.TryParse(input, out maxGames) || maxGames < 1 || maxGames > 1000)
-            {
-                Console.WriteLine("Invalid input.");
-                Console.WriteLine("Choose game count to run: ");
-                input = Console.ReadLine();
-            }
+            int maxGames = GetMaxGames();
 
-            int x = _consoleUserInterface.GetUserInput("x");
-            int y = _consoleUserInterface.GetUserInput("y");
+            int x = GetDimensionX();
 
-            gameRunnerInstances = CreateParallelInstances(maxGames, x, y);
+            int y = GetDimensionY();
+
+            gameRunnerInstances = CreateParallelRunningInstances(maxGames, x, y);
 
             foreach (var entry in gameRunnerInstances)
             {
@@ -49,6 +46,7 @@ namespace GameOfLife.Runner
             Console.WriteLine("Enter game numbers to show. If you wish to show less than 8 games, end with 0.");
 
             int gameNo;
+            string input;
             var gamesToShow = new int?[ConstantValues.MaxRunningGames];
             for (int i = 0; i < ConstantValues.MaxRunningGames; i++)
             {
@@ -81,9 +79,8 @@ namespace GameOfLife.Runner
                             {
                                 _consoleUserInterface.GameOverOutput();
                             }
-                            totalIterations =+ entry.Value.MatrixField.Iterations;
-                            totalLiveCells =+ entry.Value.MatrixField.LiveCells;
-                            
+                            totalIterations = +entry.Value.MatrixField.Iterations;
+                            totalLiveCells = +entry.Value.MatrixField.LiveCells;
                         }
                     }
                 }
@@ -94,7 +91,7 @@ namespace GameOfLife.Runner
             Console.ReadLine();
         }
 
-        public Dictionary<int, GameRunner> CreateParallelInstances(int maxGames, int x, int y)
+        public Dictionary<int, GameRunner> CreateParallelRunningInstances(int maxGames, int x, int y)
         {
             var gameRunnerInstances = new Dictionary<int, GameRunner>(maxGames);
             Parallel.For(0, maxGames, i =>
@@ -104,6 +101,39 @@ namespace GameOfLife.Runner
                 gameRunnerInstances.Add(i, gameRunnerInstance);
             });
             return gameRunnerInstances;
+        }
+
+        public int GetMaxGames()
+        {
+            int maxGames = _consoleUserInterface.GetUserInput("Game count to run");
+            while (!_validator.IsMaxGamesCountInputValid(maxGames))
+            {
+                _consoleUserInterface.InvalidInputMessage();
+                maxGames = _consoleUserInterface.GetUserInput("Game count to run");
+            }
+            return maxGames;
+        }
+
+        public int GetDimensionX()
+        {
+            int x = _consoleUserInterface.GetUserInput("x");
+            while (!_validator.IsDimensionInputValid(x))
+            {
+                _consoleUserInterface.InvalidInputMessage();
+                x = _consoleUserInterface.GetUserInput("x");
+            }
+            return x;
+        }
+
+        public int GetDimensionY()
+        {
+            int y = _consoleUserInterface.GetUserInput("y");
+            while (!_validator.IsDimensionInputValid(y))
+            {
+                _consoleUserInterface.InvalidInputMessage();
+                y = _consoleUserInterface.GetUserInput("y");
+            }
+            return y;
         }
     }
 }

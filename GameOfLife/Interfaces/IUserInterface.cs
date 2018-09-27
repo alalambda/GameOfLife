@@ -4,6 +4,7 @@ namespace GameOfLife.Interfaces
 {
     interface IUserInterface
     {
+        void InvalidInputMessage();
         int GetUserInput(string paramName);
         void LiveCellsOutput(int liveCells);
         void IterationsOutput(int iterations);

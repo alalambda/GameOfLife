@@ -9,7 +9,7 @@ namespace GameOfLife.Validators
     {
         public bool IsMaxGamesCountInputValid(int maxGamesCount)
         {
-            if (maxGamesCount > ConstantValues.MaxRunningGames && maxGamesCount < ConstantValues.MinRunningGames)
+            if (ConstantValues.MinRunningGames > maxGamesCount && ConstantValues.MaxRunningGames < maxGamesCount)
                 return false;
             return true;
         }
@@ -18,7 +18,7 @@ namespace GameOfLife.Validators
         {
             for (int i = 0; i < chosenGames.Length; i++)
             {
-                if (chosenGames[i] < ConstantValues.MinRunningGames && chosenGames[i] < ConstantValues.MaxRunningGames)
+                if (ConstantValues.MinRunningGames > chosenGames[i] && ConstantValues.MaxRunningGames < chosenGames[i])
                     return false;
             }
             return true;
@@ -26,7 +26,7 @@ namespace GameOfLife.Validators
 
         public bool IsDimensionInputValid(int dimension)
         {
-            if (dimension < ConstantValues.MinDimension && dimension > ConstantValues.MaxDimension)
+            if (ConstantValues.MinDimension > dimension && ConstantValues.MaxDimension < dimension)
                 return false;
             return true;
         }

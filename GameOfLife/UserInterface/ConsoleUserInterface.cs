@@ -7,6 +7,12 @@ namespace GameOfLife.UserInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
+
+        public void InvalidInputMessage()
+        {
+            Console.WriteLine("Invalid input.");
+        }
+
         public int GetUserInput(string paramName)
         {
             int dimension;
@@ -14,7 +20,7 @@ namespace GameOfLife.UserInterface
             string input = Console.ReadLine();
             while (!int.TryParse(input, out dimension))
             {
-                Console.WriteLine("Invalid input.");
+                InvalidInputMessage();
                 Console.WriteLine($"{paramName} = ");
                 input = Console.ReadLine();
             }
