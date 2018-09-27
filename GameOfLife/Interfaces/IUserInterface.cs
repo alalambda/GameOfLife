@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GameOfLife.Model;
 
 namespace GameOfLife.Interfaces
 {
@@ -14,5 +12,7 @@ namespace GameOfLife.Interfaces
         void AskForTerminateGame();
         bool IsGameRestoreRequired();
         bool IsGameSaveRequired();
+        void OutputField(MatrixField MatrixField);
+        void NormalizeOutputRate();
     }
 }

@@ -1,8 +1,7 @@
 ﻿using GameOfLife.Interfaces;
-using GameOfLife.Logic;
+using GameOfLife.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 
 namespace GameOfLife.UserInterface
 {
@@ -50,13 +49,13 @@ namespace GameOfLife.UserInterface
 
         public bool IsGameRestoreRequired()
         {
-            Console.WriteLine("Restore last saved game? y/n");
+            Console.WriteLine("Restore last saved game? 'y' or any key");
             return IsYesOptionSelected(); 
         }
 
         public bool IsGameSaveRequired()
         {
-            Console.WriteLine("Save Game? y/n");
+            Console.WriteLine("Save Game? 'y' or any key");
             return IsYesOptionSelected();
         }
 
@@ -64,6 +63,24 @@ namespace GameOfLife.UserInterface
         {
             var key = Console.ReadKey().Key.ToString().ToLower();
             return key.Equals("y");
+        }
+
+        public void OutputField(MatrixField MatrixField)
+        {
+            Console.Clear();
+            for (int x = 0; x < MatrixField.DimX; x++)
+            {
+                for (int y = 0; y < MatrixField.DimY; y++)
+                {
+                    Console.Write((int)MatrixField.Cells[x, y].State);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public void NormalizeOutputRate()
+        {
+            Thread.Sleep(1000);
         }
     }
 }

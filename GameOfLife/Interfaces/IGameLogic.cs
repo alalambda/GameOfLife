@@ -7,9 +7,7 @@ namespace GameOfLife.Interfaces
 {
     interface IGameLogic
     {
-        void SaveGame(MatrixField matrixField, int iterations, int liveCells);
+        void SaveGame(MatrixField matrixField);
         Data RestoreGame();
-        bool IsTerminateGame();
-
     }
 }

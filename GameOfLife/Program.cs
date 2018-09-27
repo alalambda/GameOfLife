@@ -9,6 +9,8 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
+            
+
             int maxGames;
             Console.WriteLine("Choose game count to run: ");
             string input = Console.ReadLine();
