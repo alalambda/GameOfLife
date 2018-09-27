@@ -16,5 +16,6 @@ namespace GameOfLife.Interfaces
         void OutputField(MatrixField MatrixField);
         void NormalizeOutputRate();
         void AskForGameCountToRun();
+        void AskForSelectedGames();
     }
 }

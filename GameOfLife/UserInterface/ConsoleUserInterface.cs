@@ -81,7 +81,6 @@ namespace GameOfLife.UserInterface
                 }
                 Console.WriteLine();
             }
-            //NormalizeOutputRate();
         }
 
         public void NormalizeOutputRate()
@@ -92,6 +91,11 @@ namespace GameOfLife.UserInterface
         public void AskForGameCountToRun()
         {
             Console.WriteLine("Choose game count to run: ");
+        }
+
+        public void AskForSelectedGames()
+        {
+            Console.WriteLine("Enter game numbers to show. If you wish to show less than 8 games, end with 0.");
         }
     }
 }
