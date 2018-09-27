@@ -32,9 +32,13 @@ namespace GameOfLife.Runner
             int y = _consoleUserInterface.GetDimensionInput("y");
 
             var gameTasks = new Dictionary<int, Task>(maxGames);
+            var gameDrawerTasks = new Dictionary<int, Task>(maxGames);
+            
             Parallel.For(0, maxGames, i =>
             {
-                gameTasks.Add(i, new Task(() => new GameRunner().Start(x, y)));
+                var gameRunner = new GameRunner();
+                gameTasks.Add(i, new Task(() => gameRunner.Start(x, y)));
+                gameDrawerTasks.Add(i, new Task(() => gameRunner.Show()));
             });
 
             foreach (KeyValuePair<int, Task> entry in gameTasks)
@@ -59,7 +63,8 @@ namespace GameOfLife.Runner
                 var gameTask = gameTasks[gameNo - 1];
                 gameTask.Start();
                 gameTask.Wait();
-
+                gameDrawerTasks[gameNo - 1].Start();
+                gameTask.Wait();
             }
         }
     }

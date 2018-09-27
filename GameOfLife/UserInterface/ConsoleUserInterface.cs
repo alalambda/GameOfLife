@@ -76,6 +76,7 @@ namespace GameOfLife.UserInterface
                 }
                 Console.WriteLine();
             }
+            NormalizeOutputRate();
         }
 
         public void NormalizeOutputRate()
