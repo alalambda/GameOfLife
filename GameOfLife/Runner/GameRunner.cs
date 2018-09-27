@@ -30,7 +30,6 @@ namespace GameOfLife.Runner
             //if (_consoleUserInterface.IsGameRestoreRequired()) InitRestoredGame();
             //else InitNewGame();
             InitNewGame(x, y);
-            //Show();
             InitLiveCells();
             Run();
         }
