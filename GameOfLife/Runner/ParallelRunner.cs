@@ -31,24 +31,24 @@ namespace GameOfLife.Runner
             int x = _consoleUserInterface.GetDimensionInput("x");
             int y = _consoleUserInterface.GetDimensionInput("y");
 
-            var gameTasks = new Dictionary<int, Task>(maxGames);
-            var gameDrawerTasks = new Dictionary<int, Task>(maxGames);
+            var gameRunnerInstances = new Dictionary<int, GameRunner>(maxGames);
             
             Parallel.For(0, maxGames, i =>
             {
-                var gameRunner = new GameRunner();
-                gameTasks.Add(i, new Task(() => gameRunner.Start(x, y)));
-                gameDrawerTasks.Add(i, new Task(() => gameRunner.Show()));
+                var gameRunnerInstance = new GameRunner();
+                gameRunnerInstance.Start(x, y);
+                gameRunnerInstances.Add(i, gameRunnerInstance);
             });
 
-            foreach (KeyValuePair<int, Task> entry in gameTasks)
+            foreach (var entry in gameRunnerInstances)
             {
-                Console.WriteLine($"{entry.Key + 1}. game process: {entry.Value.Id}");
+                Console.WriteLine($"created game no. {entry.Key + 1}");
             }
 
             Console.WriteLine("Enter game numbers to show. If you wish to show less than 8 games, end with 0.");
 
             int gameNo;
+            var gamesToShow = new List<int>();
             for (int i = 0; i < 8; i++)
             {
                 input = Console.ReadLine();
@@ -59,13 +59,20 @@ namespace GameOfLife.Runner
                     input = Console.ReadLine();
                 }
                 if (gameNo == 0) break;
-
-                var gameTask = gameTasks[gameNo - 1];
-                gameTask.Start();
-                gameTask.Wait();
-                gameDrawerTasks[gameNo - 1].Start();
-                gameTask.Wait();
+                gamesToShow.Add(gameNo);
             }
+
+            foreach (var entry in gameRunnerInstances)
+            {
+                foreach (var gameNumber in gamesToShow)
+                {
+                    if (entry.Key == gameNumber)
+                    {
+                        entry.Value.Show();
+                    }
+                }
+            }
+            Console.ReadLine();
         }
     }
 }
