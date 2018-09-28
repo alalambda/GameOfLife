@@ -5,6 +5,7 @@ using GameOfLife.Validators;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GameOfLife.Runner
@@ -16,33 +17,33 @@ namespace GameOfLife.Runner
         private readonly Validator _validator;
 
         private ConcurrentDictionary<int, Task> _gameTasks;
-        private ConcurrentDictionary<int, Task> _showTasks;
+        private ConcurrentDictionary<int, Action> _showActions;
 
         public ParallelRunnerV1()
         {
             _consoleUserInterface = new ConsoleUserInterface();
             _validator = new Validator();
             _gameTasks = new ConcurrentDictionary<int, Task>();
-            _showTasks = new ConcurrentDictionary<int, Task>();
+            _showActions = new ConcurrentDictionary<int, Action>();
         }
 
-        public async void RunParallel()
+        public void RunParallel()
         {
             int maxGames = GetMaxGames();
             int x = GetDimensionX();
             int y = GetDimensionY();
 
             CreateTasks(maxGames, x, y);
-            await StartAllTasks();
+            StartAllTasks();
             GetSelectedGamesAndShow();
             Console.ReadLine();
         }
 
         public void GetSelectedGamesAndShow()
         {
-            int?[] selectedGames = GetSelectedGames();
-            for (int i = 0; i < 1000; i++)
+            while (true)
             {
+                int?[] selectedGames = GetSelectedGames();
                 Console.Clear();
                 DisplaySelectedGames(selectedGames);
             }
@@ -72,9 +73,13 @@ namespace GameOfLife.Runner
         {
             for (int i = 0; i < selectedGames.Length; i++)
             {
-                Console.WriteLine($"Game {i + 1}");
-                ShowGame(i);
+                if (selectedGames[i] != null)
+                {
+                    Console.WriteLine($"Game {selectedGames[i].Value + 1}");
+                    ShowGame(selectedGames[i].Value);
+                }
             }
+            Thread.Sleep(1000);
         }
 
         private void CreateTasks(int maxGames, int x, int y)
@@ -83,28 +88,28 @@ namespace GameOfLife.Runner
             {
                 var gameInstance = new GameRunner();
                 var gameTask = new Task(() => gameInstance.Start(x, y));
-                var showTask = new Task(() => gameInstance.Show());
-
                 _gameTasks.TryAdd(i, gameTask);
-                _showTasks.TryAdd(i, showTask);
+
+                Action showAction = gameInstance.Show;
+                _showActions.TryAdd(i, showAction);
             });
         }
 
-        private Task StartAllTasks()
+        public delegate void PrintFieldAction(GameRunner gameRunnerInstance);
+
+
+        private void StartAllTasks()
         {
-            return Task.WhenAll(_gameTasks.Values);
-            // TODO: add paralell foreach
-            foreach (var gameTask in _gameTasks)
+            Parallel.ForEach(_gameTasks, gameTask =>
             {
                 gameTask.Value.Start();
                 Console.WriteLine($"{gameTask.Key + 1}. game is running");
-            }
+            });
         }
 
         private void ShowGame(int i)
         {
-            _showTasks[i].Start();
-            _showTasks[i].Wait();
+            _showActions[i].Invoke();
         }
 
         public int GetMaxGames()
