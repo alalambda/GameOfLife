@@ -1,5 +1,6 @@
 ﻿using GameOfLife.Constants;
 using GameOfLife.Interfaces;
+using GameOfLife.Logic;
 using GameOfLife.UserInterface;
 using GameOfLife.Validators;
 using System;
@@ -13,6 +14,7 @@ namespace GameOfLife.Runner
     public class ParallelRunnerV1
     {
         private readonly IUserInterface _consoleUserInterface;
+        private readonly IGameLogic _gameLogic;
 
         private readonly Validator _validator;
 
@@ -22,6 +24,7 @@ namespace GameOfLife.Runner
         public ParallelRunnerV1()
         {
             _consoleUserInterface = new ConsoleUserInterface();
+            _gameLogic = new GameLogic();
             _validator = new Validator();
             _gameTasks = new ConcurrentDictionary<int, Task>();
             _gameRunnerInstances = new ConcurrentDictionary<int, GameRunner>();
@@ -37,6 +40,15 @@ namespace GameOfLife.Runner
             StartAllTasks();
             GetSelectedGamesAndShow();
             Console.ReadLine();
+        }
+
+        public void SaveAll()
+        {
+            Parallel.ForEach(_gameRunnerInstances, gameRunnerInstance =>
+                {
+                    var matrixField = gameRunnerInstance.Value.MatrixField;
+                    _gameLogic.SaveGame(matrixField);
+                });
         }
 
         public void GetSelectedGamesAndShow()
@@ -74,6 +86,10 @@ namespace GameOfLife.Runner
                 int totalIterations = 0;
                 Thread.Sleep(1000);
                 Console.Clear();
+                //if (_consoleUserInterface.IsGameSaveRequired())
+                //{
+                //    SaveAll();
+                //}
                 for (int i = 0; i < selectedGames.Length; i++)
                 {
                     if (selectedGames[i] != null)

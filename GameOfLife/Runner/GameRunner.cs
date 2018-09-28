@@ -67,6 +67,7 @@ namespace GameOfLife.Runner
                 Process();
             }
         }
+
         public void Process()
         {
             MatrixField.Cells = _ruleLogic.ApplyNextGenerationRulesOnField(MatrixField);
