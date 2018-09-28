@@ -17,7 +17,6 @@ namespace GameOfLife.Runner
         private readonly Validator _validator;
 
         private ConcurrentDictionary<int, Task> _gameTasks;
-        //private ConcurrentDictionary<int, Action> _showActions;
         private ConcurrentDictionary<int, GameRunner> _gameRunnerInstances;
 
         public ParallelRunnerV1()
@@ -25,7 +24,6 @@ namespace GameOfLife.Runner
             _consoleUserInterface = new ConsoleUserInterface();
             _validator = new Validator();
             _gameTasks = new ConcurrentDictionary<int, Task>();
-            //_showActions = new ConcurrentDictionary<int, Action>();
             _gameRunnerInstances = new ConcurrentDictionary<int, GameRunner>();
         }
 
@@ -82,7 +80,6 @@ namespace GameOfLife.Runner
                     if (selectedGames[i] != null)
                     {
                         Console.WriteLine($"\nGame {selectedGames[i].Value + 1}");
-                        //_showActions[selectedGames[i].Value].Invoke();
                         _gameRunnerInstances[selectedGames[i].Value].Show();
                         totalLiveCells += _gameRunnerInstances[selectedGames[i].Value].MatrixField.LiveCells;
                         totalIterations += _gameRunnerInstances[selectedGames[i].Value].MatrixField.Iterations;
@@ -107,9 +104,6 @@ namespace GameOfLife.Runner
                 var gameTask = new Task(() => gameInstance.Start(x, y));
                 _gameTasks.TryAdd(i, gameTask);
                 _gameRunnerInstances.TryAdd(i, gameInstance);
-
-                //Action showAction = gameInstance.Show;
-                //_showActions.TryAdd(i, showAction);
             });
         }
 
