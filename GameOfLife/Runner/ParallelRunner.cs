@@ -63,6 +63,7 @@ namespace GameOfLife.Runner
 
             do
             {
+                Thread.Sleep(1000);
                 Console.Clear();
                 foreach (var entry in gameRunnerInstances)
                 {
@@ -79,14 +80,13 @@ namespace GameOfLife.Runner
                             {
                                 _consoleUserInterface.GameOverOutput();
                             }
-                            totalIterations = +entry.Value.MatrixField.Iterations;
-                            totalLiveCells = +entry.Value.MatrixField.LiveCells;
+                            totalIterations += entry.Value.MatrixField.Iterations;
+                            totalLiveCells += entry.Value.MatrixField.LiveCells;
                         }
                     }
                 }
                 _consoleUserInterface.LiveCellsOutput(totalLiveCells);
                 _consoleUserInterface.IterationsOutput(totalIterations);
-                Thread.Sleep(1000);
             } while (totalLiveCells != 0 && !_consoleUserInterface.IsAnyKeyPressed());
             Console.ReadLine();
         }

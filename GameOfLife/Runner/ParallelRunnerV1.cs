@@ -70,8 +70,13 @@ namespace GameOfLife.Runner
 
         public void DisplaySelectedGames(int?[] selectedGames)
         {
-            for (int q = 0; q < 100; q++)
+            int totalLiveCells = 0;
+            do
             {
+                totalLiveCells = 0;
+                int totalIterations = 0;
+                Thread.Sleep(1000);
+                Console.Clear();
                 for (int i = 0; i < selectedGames.Length; i++)
                 {
                     if (selectedGames[i] != null)
@@ -79,11 +84,19 @@ namespace GameOfLife.Runner
                         Console.WriteLine($"\nGame {selectedGames[i].Value + 1}");
                         //_showActions[selectedGames[i].Value].Invoke();
                         _gameRunnerInstances[selectedGames[i].Value].Show();
+                        totalLiveCells += _gameRunnerInstances[selectedGames[i].Value].MatrixField.LiveCells;
+                        totalIterations += _gameRunnerInstances[selectedGames[i].Value].MatrixField.Iterations;
+                        
                     }
                 }
-                Thread.Sleep(1000);
-                Console.Clear();
-            }
+                _consoleUserInterface.LiveCellsOutput(totalLiveCells);
+                _consoleUserInterface.IterationsOutput(totalIterations);
+                if (totalLiveCells == 0)
+                {
+                    _consoleUserInterface.GameOverOutput();
+                    break;
+                }
+            } while (totalLiveCells != 0 && !_consoleUserInterface.IsAnyKeyPressed());
         }
 
         private void CreateTasks(int maxGames, int x, int y)
@@ -93,11 +106,10 @@ namespace GameOfLife.Runner
                 var gameInstance = new GameRunner();
                 var gameTask = new Task(() => gameInstance.Start(x, y));
                 _gameTasks.TryAdd(i, gameTask);
+                _gameRunnerInstances.TryAdd(i, gameInstance);
 
                 //Action showAction = gameInstance.Show;
                 //_showActions.TryAdd(i, showAction);
-
-                _gameRunnerInstances.TryAdd(i, gameInstance);
             });
         }
 
@@ -106,7 +118,7 @@ namespace GameOfLife.Runner
             Parallel.ForEach(_gameTasks, gameTask =>
             {
                 gameTask.Value.Start();
-                Console.WriteLine($"{gameTask.Key + 1}. game is running");
+                Console.WriteLine($"{gameTask.Key + 1}. game is {gameTask.Value.Status}");
             });
         }
 
