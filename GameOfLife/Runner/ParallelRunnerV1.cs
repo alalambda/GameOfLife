@@ -43,7 +43,14 @@ namespace GameOfLife.Runner
         {
             int?[] selectedGames = GetSelectedGames();
             Console.Clear();
+
             DisplaySelectedGames(selectedGames);
+
+            //for (int i = 0; i < selectedGames.Length; i++)
+            //{
+            //    if (selectedGames[i] != null)
+            //        DisplaySelectedGame(selectedGames[i].Value);
+            //}
         }
 
         public int?[] GetSelectedGames()
@@ -93,7 +100,28 @@ namespace GameOfLife.Runner
                     _consoleUserInterface.GameOverOutput();
                     break;
                 }
-            } while (totalLiveCells != 0 && !_consoleUserInterface.IsAnyKeyPressed());
+            } while (totalLiveCells != 0 || !_consoleUserInterface.IsAnyKeyPressed());
+        }
+
+        public void DisplaySelectedGame(int selectedGame)
+        {
+            int? totalLiveCells = null;
+            int totalIterations = 0;
+
+            Console.Clear();
+            while (totalLiveCells != 0)
+            {
+                Console.Clear();
+                Thread.Sleep(1000);
+                
+                totalLiveCells = 0;
+                Console.WriteLine($"\nGame {selectedGame + 1}");
+                _gameRunnerInstances[selectedGame].Show();
+                totalLiveCells += _gameRunnerInstances[selectedGame].MatrixField.LiveCells;
+                totalIterations += _gameRunnerInstances[selectedGame].MatrixField.Iterations;
+            }
+            _consoleUserInterface.LiveCellsOutput(totalLiveCells.Value);
+            _consoleUserInterface.IterationsOutput(totalIterations);
         }
 
         private void CreateTasks(int maxGames, int x, int y)

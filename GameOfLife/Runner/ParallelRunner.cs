@@ -72,7 +72,6 @@ namespace GameOfLife.Runner
                         if (entry.Key == gamesToShow[i])
                         {
                             Console.WriteLine($"\nGame no. {entry.Key}");
-                            entry.Value.Process();
 
                             entry.Value.Show();
 
