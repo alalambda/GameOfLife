@@ -42,15 +42,7 @@ namespace GameOfLife.Runner
         public void GetSelectedGamesAndShow()
         {
             int?[] selectedGames = GetSelectedGames();
-            Console.Clear();
-
             DisplaySelectedGames(selectedGames);
-
-            //for (int i = 0; i < selectedGames.Length; i++)
-            //{
-            //    if (selectedGames[i] != null)
-            //        DisplaySelectedGame(selectedGames[i].Value);
-            //}
         }
 
         public int?[] GetSelectedGames()
@@ -75,7 +67,7 @@ namespace GameOfLife.Runner
 
         public void DisplaySelectedGames(int?[] selectedGames)
         {
-            int totalLiveCells = 0;
+            int totalLiveCells;
             do
             {
                 totalLiveCells = 0;
