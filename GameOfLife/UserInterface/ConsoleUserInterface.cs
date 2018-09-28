@@ -72,7 +72,6 @@ namespace GameOfLife.UserInterface
 
         public void OutputField(MatrixField MatrixField)
         {
-            Console.WriteLine();
             for (int x = 0; x < MatrixField.DimX; x++)
             {
                 for (int y = 0; y < MatrixField.DimY; y++)
